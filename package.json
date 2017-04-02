@@ -1,0 +1,26 @@
+{
+  "name": "",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ect": "^0.5.9",
+    "koa": "~2.2.0",
+    "koa-body": "^2.0.0",
+    "koa-router": "^7.0.1",
+    "koa-session": "^5.0.0",
+    "express-session": "^1.15.1",
+    "express": "^4.15.2",
+    "body-parser": "^1.17.1",
+    "co-body": "~5.1.1",
+    "redis": "~2.7.1",
+    "sequelize": "~3.30.3",
+    "co": "~4.6.0",
+    "pg": "~6.1.5"
+  }
+}

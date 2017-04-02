@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>主页</title>
+    <script type="text/javascript" src="cookie.js"></script>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+</head>
+<style type="text/css">
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    h2 {
+        float: left;
+        margin-left: 350px;
+        margin-bottom: 50px;
+    }
+
+    #home {
+        display: none;
+    }
+
+    .top-nav {
+        float: right;
+        margin-right: 350px;
+    }
+</style>
+<body>
+<h2>假装这是个主页</h2>
+<div class="top-nav">
+    <div id="text-login">
+        <a href="register.html">注册</a>
+        <a href="login.html" id="login">登录</a>
+    </div>
+    <div id="home"><a href="" id="login-name"></a>的个人主页 <a href="javascript:" id="outlogin">退出登录</a></div>
+</div>
+</body>
+</html>
+<script type="text/javascript">
+    let oTL = document.getElementById("text-login");
+    let oHome = document.getElementById("home");
+    let oOut = document.getElementById("outlogin");
+    let oLoginName = document.getElementById("login-name");
+    if (getCookie("user")) {
+        oTL.style.display = "none";
+        oHome.style.display = "block";
+        let obj = convertCartStrToObj(getCookie("user"));
+        oLoginName.innerHTML = obj.name;
+    }
+    oOut.onclick = function () {
+        removeCookie("user");
+        window.location.href = "index.html";
+    };
+    function convertCartStrToObj(cartStr) {
+        let obj = {};
+        let arrVal = cartStr.split(",");
+        for (let i = 0; i < arrVal.length; i++) {
+            data = arrVal[i].split(":");
+            console.log(data);
+            obj[data[0]] = data[1];
+        }
+        return obj;
+    }
+</script>

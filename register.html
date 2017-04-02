@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>注册页</title>
+    <script type="text/javascript" src="cookie.js"></script>
+    <link rel="stylesheet" href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+<div class="row">
+    <div class="col-sm-4 col-sm-offset-4">
+        <form>
+            <h2>欢迎来到17点, 请注册</h2>
+            <div class="form-group">
+                <label>手机号：</label>
+                <input class="form-control" type="text" id="tel" name="手机号">
+                <span id="tel-warn"></span>
+            </div>
+            <div class="form-group">
+                <label>用户名：</label>
+                <input class="form-control" type="text" id="name" name="用户名">
+                <span id="name-warn"></span>
+            </div>
+            <div class="form-group">
+                <label>密码：</label>
+                <input class="form-control" type="password" id="key" name="密码">
+                <span id="key-warn"></span>
+            </div>
+            <div class="form-group">
+                <label>再次输入密码：</label>
+                <input class="form-control" type="password" id="key2" name="再次输入密码">
+                <span id="key2-warn"></span>
+            </div>
+            <div class="form-group" style="text-align: center">
+                <input class="btn" type="button" id="btn" name="" value="注册">
+            </div>
+            <div style="text-align: right">
+                <a href="login.html">已有账号，赶紧去登录</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+
+</html>
+<script type="text/javascript">
+    var oTel = document.getElementById("tel");
+    var oName = document.getElementById("name");
+    var oKey = document.getElementById("key");
+    var oKey2 = document.getElementById("key2");
+    var oBtn = document.getElementById("btn");
+    var oTelwarn = document.getElementById("tel-warn");
+    var oNamewarn = document.getElementById("name-warn");
+    var oKeywarn = document.getElementById("key-warn");
+    var oKeywarn2 = document.getElementById("key2-warn");
+    var reg = /^1[34578]\d{9}$/;
+    var reg1 = /^[a-zA-Z0-9_\u4e00-\u9fa5]{3,10}$/;
+    var reg2 = /^\w{6,12}$/;
+    oTel.onblur = fnTel;
+    oName.onblur = fnName;
+    oKey.onblur = fnKey;
+    oKey2.onblur = fnKey2;
+    oBtn.onclick = function () {
+        if (!(fnTel() & fnName() & fnKey() & fnKey2())) {
+            return;
+        }
+        var val = "name" + ":" + oName.value + "," + "key" + ":" + oKey.value + "," + "tel" + ":" + oTel.value;
+        createCookie("user", val);
+        if (getCookie("bank")) {
+            var bankVal = getCookie("bank") + "&" + val;
+        } else {
+            var bankVal = val;
+        }
+        createCookie("bank", bankVal, setCookieDate(100));
+        window.location.href = "index.html";
+    };
+
+    function fnTel() {
+        if (getCookie("bank")) {
+            var arrBank = getCookie("bank").split("&");
+            for (let i = 0; i < arrBank.length; i++) {
+                var obj = convertCartStrToObj(arrBank[i]);
+                if (oTel.value == obj.tel) {
+                    oTelwarn.innerHTML = "您的手机号已经被注册";
+                    oTel.value = "";
+                    oTelwarn.style.color = "red";
+                    return;
+                }
+            }
+        }
+        if (reg.test(oTel.value)) {
+            oTelwarn.innerHTML = "√";
+            oTelwarn.style.color = "green";
+            return true;
+        } else {
+            oTelwarn.innerHTML = "X请输入11位手机号";
+            oTel.value = "";
+            oTelwarn.style.color = "red";
+        }
+    }
+    function fnName() {
+        if (getCookie("bank")) {
+            var arrBank = getCookie("bank").split("&");
+            for (var i = 0; i < arrBank.length; i++) {
+                var obj = convertCartStrToObj(arrBank[i]);
+                if (oName.value == obj.name) {
+                    oNamewarn.innerHTML = "此用户名已经被注册";
+                    oName.value = "";
+                    oNamewarn.style.color = "red";
+                    return;
+                }
+            }
+        }
+        if (reg1.test(oName.value)) {
+            oNamewarn.innerHTML = "√";
+            oNamewarn.style.color = "green";
+            return true;
+        } else {
+            oNamewarn.innerHTML = "X请输入3-10位字母数字中文下划线";
+            oName.value = "";
+            oNamewarn.style.color = "red"
+        }
+    }
+
+    function fnKey() {
+        if (reg2.test(oKey.value)) {
+            oKeywarn.innerHTML = "√";
+            oKeywarn.style.color = "green"
+            return true;
+        } else {
+            oKeywarn.innerHTML = "X请输入6-12位字母数字下划线";
+            oKeywarn.value = "";
+            oKeywarn.style.color = "red"
+        }
+    }
+
+    function fnKey2() {
+        if (oKey2.value == oKey.value) {
+            oKeywarn2.innerHTML = "√";
+            oKeywarn2.style.color = "green"
+            return true;
+        } else {
+            oKeywarn2.innerHTML = "X两次输入的密码不同";
+            oKeywarn2.value = "";
+            oKeywarn2.style.color = "red"
+        }
+    }
+
+    function convertCartStrToObj(cartStr) {
+        var obj = {};
+        var arrVal = cartStr.split(",");
+        for (let i = 0; i < arrVal.length; i++) {
+            data = arrVal[i].split(":");
+            obj[data[0]] = data[1];
+        }
+        return obj;
+    }
+</script>
